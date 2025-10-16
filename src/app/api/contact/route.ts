@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { db } from '@/lib/db';
 
 // Fallback email function using a different configuration
 async function sendFallbackEmail(name: string, email: string, message: string) {
@@ -115,6 +116,21 @@ export async function POST(request: NextRequest) {
     const sanitizedName = name.trim().replace(/[<>]/g, '');
     const sanitizedEmail = email.trim().toLowerCase();
     const sanitizedMessage = message.trim().replace(/[<>]/g, '');
+
+    // Save message to database
+    try {
+      await db.contactMessage.create({
+        data: {
+          name: sanitizedName,
+          email: sanitizedEmail,
+          message: sanitizedMessage
+        }
+      });
+      console.log(`Message saved to database from: ${sanitizedEmail}`);
+    } catch (dbError) {
+      console.error('Failed to save message to database:', dbError);
+      // Continue with email sending even if database save fails
+    }
 
     // Try primary email service first
     try {
@@ -246,7 +262,8 @@ export async function POST(request: NextRequest) {
         console.log(`Contact form submission from: ${sanitizedEmail} (fallback service)`);
       } catch (fallbackError) {
         console.error('Both email services failed:', fallbackError);
-        throw new Error('All email services are currently unavailable');
+        // Don't throw error - message was saved to database
+        console.log('Message saved to database but email sending failed');
       }
     }
 

@@ -13,20 +13,161 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+// Admin User Management
+model Admin {
   id        String   @id @default(cuid())
   email     String   @unique
-  name      String?
+  name      String
+  password  String
+  role      String   @default("admin")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Post {
+// Site Settings
+model SiteSettings {
+  id              String   @id @default(cuid())
+  siteTitle       String   @default("Nabil Amin Hridoy - MERN Stack Developer")
+  siteDescription String   @default("Full-stack MERN developer specializing in scalable web applications")
+  faviconUrl      String?
+  logoUrl         String?
+  primaryColor    String   @default("#175BEA")
+  secondaryColor  String   @default("#00C5FB")
+  themeMode       String   @default("system")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// Hero Section
+model HeroSection {
+  id              String   @id @default(cuid())
+  title           String   @default("Hi, I'm Nabil Amin Hridoy")
+  subtitle        String   @default("MERN Stack & Full Stack Developer")
+  description     String   @default("Building scalable, user-friendly, and high-performance web applications with modern technologies and best practices.")
+  backgroundImage String?
+  ctaButtonText   String   @default("Hire Me")
+  ctaButtonLink   String   @default("#contact")
+  secondaryButtonText String @default("View Projects")
+  secondaryButtonLink String @default("#projects")
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// About Section
+model AboutSection {
+  id          String   @id @default(cuid())
+  title       String   @default("About Me")
+  description String   @default("With over 4 years of experience in web development, I specialize in creating robust, scalable applications using the MERN stack. I'm passionate about clean code, optimal performance, and exceptional user experiences.")
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Skills
+model Skill {
+  id          String   @id @default(cuid())
+  name        String
+  level       Int      @default(50)
+  icon        String?
+  color       String?
+  category    String   @default("technical")
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Projects
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+  githubUrl   String?
+  liveUrl     String?
+  techStack   String   // JSON array of technologies
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Experience
+model Experience {
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  period      String
+  description String
+  type        String   @default("work") // work, education
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Testimonials
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  position    String
+  company     String?
+  content     String
+  rating      Int      @default(5)
+  imageUrl    String?
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Social Links
+model SocialLink {
+  id          String   @id @default(cuid())
+  name        String
+  url         String
+  icon        String
+  color       String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Contact Info
+model ContactInfo {
+  id          String   @id @default(cuid())
+  email       String   @default("nabilaminhridoy@gmail.com")
+  phone       String   @default("+880 1624-647814")
+  address     String   @default("240/1, South Paikapara, Mirpur, Dhaka, Bangladesh")
+  mapUrl      String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Contact Messages
+model ContactMessage {
   id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Footer Settings
+model FooterSettings {
+  id            String   @id @default(cuid())
+  copyrightText String  @default("© 2025 Nabil Amin Hridoy. All rights reserved.")
+  showSocial    Boolean  @default(true)
+  showContact   Boolean  @default(true)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
