@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
   },
   // 禁用 Next.js 热重载，由 nodemon 处理重编译
   reactStrictMode: false,
+  experimental: {
+    optimizePackageImports: []
+  },
+  // Allow preview domains for development
+  allowedDevOrigins: [
+    "preview-chat-6a1825d5-d4d0-4d40-bb4f-704318bdc640.space.z.ai"
+  ],
   webpack: (config, { dev }) => {
     if (dev) {
       // 禁用 webpack 的热模块替换
